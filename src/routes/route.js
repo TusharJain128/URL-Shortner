@@ -8,7 +8,8 @@ router.get('/test', function(req,res){
 
 router.post('/url/shorten',controller.createUrl)
 
-// GET API IS NOT WORKING IN POSTMAN, IT WORKS ONLY IN BROWSER
+// GET API IS NOT WORKING IN POSTMAN, IT WORKS ONLY IN BROWSER,
+// IF YOU WANT TO RUN GET API IN POSTMAN THEN CHANGE RES.REDIRECT TO RES.SEND IN CONTROLLER
 router.get('/:urlCode',controller.getUrl)
 
 module.exports = router

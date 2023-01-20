@@ -60,12 +60,12 @@ exports.getUrl = async function (req, res) {
         let catchUrlData = await GET_ASYNC(`${data}`)
         let objectConversion = JSON.parse(catchUrlData)
         if (catchUrlData) {
-            return res.status(302).send(objectConversion.longUrl)
+            return res.status(302).redirect(objectConversion.longUrl)
         }
         let url = await urlModel.findOne({ urlCode: data })
         if (!url) return res.status(404).send({ status: false, msg: "Url not found" })
         await SET_ASYNC(`${data}`, JSON.stringify(url))
-        res.status(302).send(url.longUrl)
+        res.status(302).redirect(url.longUrl)
     }
     catch (err) {
         res.status(500).send({ status: false, error: err.message })
