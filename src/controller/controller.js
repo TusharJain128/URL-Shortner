@@ -45,7 +45,8 @@ exports.createUrl = async function (req, res) {
         }
         let obj = { longUrl: url }
         obj.urlCode = shortid.generate()
-        obj.shortUrl = `https://localhost:3000/${obj.urlCode}`
+        let baseUrl = req.protocol+ "://" + req.get("host")  //  https://localhost:3000
+        obj.shortUrl = baseUrl+"/"+ obj.urlCode
         const savedData = await urlModel.create(obj)
         await SET_ASYNC(`${url}`,60*1440, JSON.stringify(savedData));
         res.status(201).send({ status: true, msg: savedData })
