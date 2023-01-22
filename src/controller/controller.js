@@ -62,8 +62,8 @@ exports.getUrl = async function (req, res) {
         let data = req.params.urlCode
         if (!shortid.isValid(data)) return res.status(400).send({ status: false, msg: "Please enter valid url code in param" })
         let catchUrlData = await GET_ASYNC(`${data}`)
-        let objectConversion = JSON.parse(catchUrlData)
         if (catchUrlData) {
+            let objectConversion = JSON.parse(catchUrlData)
             return res.status(302).redirect(objectConversion.longUrl)
         }
         let url = await urlModel.findOne({ urlCode: data })
