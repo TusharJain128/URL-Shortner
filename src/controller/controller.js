@@ -3,15 +3,16 @@ const validUrl = require('valid-url')
 const shortid = require('shortid')
 const redis = require('redis')
 const axios= require('axios')
+const dotenv= require('dotenv').config()
 const {promisify}  = require('util')
 
 
 const redisClient = redis.createClient(
-    14978,
-    "redis-14978.c301.ap-south-1-1.ec2.cloud.redislabs.com",
+    process.env.RedisPort,
+    process.env.RedisHostName,
     { no_ready_check: true }
 )
-redisClient.auth("clsXWf6O2FCQBqawC9AOwqoNqKXXRlXK", function (err) {
+redisClient.auth(process.env.RedisPassword, function (err) {
     if (err) throw err
 })
 redisClient.on("connect", async function () {
@@ -33,10 +34,10 @@ exports.createUrl = async function (req, res) {
         if (!validUrl.isUri(url)) return res.status(400).send({ status: false, msg: "Please enter valid url" })
         const checkUrl = await axios.get(url).then(()=> url).catch(()=> null)
         if(checkUrl==null) return res.status(400).send({status: false, msg: "url is not valid"})
-        let isUrlExistCatch = await GET_ASYNC(`${url}`)
-        if (isUrlExistCatch) {
-            let objectConversion = JSON.parse(isUrlExistCatch)
-            return res.status(200).send({ status: true, msg: "data received from catch", data: objectConversion })
+        let isUrlExistCache = await GET_ASYNC(`${url}`)
+        if (isUrlExistCache) {
+            let objectConversion = JSON.parse(isUrlExistCache)
+            return res.status(200).send({ status: true, msg: "data received from cache", data: objectConversion })
         }
         let isUrlExist = await urlModel.findOne({ longUrl: url })
         if (isUrlExist) {
@@ -61,9 +62,9 @@ exports.getUrl = async function (req, res) {
     try {
         let data = req.params.urlCode
         if (!shortid.isValid(data)) return res.status(400).send({ status: false, msg: "Please enter valid url code in param" })
-        let catchUrlData = await GET_ASYNC(`${data}`)
-        if (catchUrlData) {
-            let objectConversion = JSON.parse(catchUrlData)
+        let cacheUrlData = await GET_ASYNC(`${data}`)
+        if (cacheUrlData) {
+            let objectConversion = JSON.parse(cacheUrlData)
             return res.status(302).redirect(objectConversion.longUrl)
         }
         let url = await urlModel.findOne({ urlCode: data })
