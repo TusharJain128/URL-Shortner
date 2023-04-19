@@ -37,7 +37,7 @@ exports.createUrl = async function (req, res) {
         let isUrlExistCache = await GET_ASYNC(`${url}`)
         if (isUrlExistCache) {
             let objectConversion = JSON.parse(isUrlExistCache)
-            return res.status(200).send({ status: true, msg: "data received from cache", data: objectConversion })
+            return res.status(200).send({ status: true, msg: "data received from cache", message: objectConversion })
         }
         let isUrlExist = await urlModel.findOne({ longUrl: url })
         if (isUrlExist) {
@@ -50,7 +50,7 @@ exports.createUrl = async function (req, res) {
         obj.shortUrl = baseUrl+"/"+ obj.urlCode
         const savedData = await urlModel.create(obj)
         await SET_ASYNC(`${url}`,60*1440, JSON.stringify(savedData));
-        res.status(201).send({ status: true, msg: savedData })
+        res.status(201).send({ status: true, message: savedData })
     }
 
     catch (err) {

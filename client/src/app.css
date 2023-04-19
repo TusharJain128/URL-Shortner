@@ -1,0 +1,59 @@
+/* Center the form */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  /* Style the input field */
+  input {
+    width: 100%;
+    max-width: 500px;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    font-size: 1rem;
+  }
+  
+  /* Style the button */
+  .submit {
+    width: 100%;
+    max-width: 200px;
+    height: 3rem;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  /* Style the result text */
+  h3 {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  /* Responsive styles */
+  @media (min-width: 576px) {
+    /* Center the form on larger screens */
+    form {
+      margin-top: 5rem;
+    }
+  
+    /* Make the input and button fields responsive */
+    input {
+      width: 37%;
+    }
+  
+    button {
+      width: auto;
+    }
+  }
+  
