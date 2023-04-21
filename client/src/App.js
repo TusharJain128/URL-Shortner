@@ -6,14 +6,18 @@ export default function App(){
 
   const [longUrl, setLongUrl] = useState("")
   const [result, setResult] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const createUrl = function(event){
+    setLoading(true)
     axios.post(`http://localhost:3000/url/shorten`,{longUrl})
     .then((res)=>{
       setResult(res.data.message.shortUrl)
+      setLoading(false)
     })
     .catch((err)=>{
       console.log(err.response.data.message)
+      setLoading(false)
     })
   }
 
@@ -26,6 +30,7 @@ export default function App(){
       <h3>Enter your Url here to convert</h3>
       <input placeholder="Enter your longUrl here...." onChange={(e)=>setLongUrl(e.target.value)}/><br/>
       <button className="submit" onClick={createUrl}>Submit</button>
+      {loading && <p>Loading...</p>}
       {
         result ? (
           <div>
